@@ -1,4 +1,4 @@
-import { Card } from '../types/game'
+import type{ Card } from '../types/game'
 
 export function getMovableRun(column: Card[], index: number): Card[] | null {
   const card = column[index]

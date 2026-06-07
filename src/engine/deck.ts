@@ -1,5 +1,5 @@
 
-import { Card, Difficulty, Rank, Suit } from '../types/game'
+import type { Card, Difficulty, Rank, Suit } from '../types/game'
 
 const ALL_SUITS: Suit[] = ['S', 'H', 'D', 'C']
 
