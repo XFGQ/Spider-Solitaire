@@ -1,0 +1,26 @@
+[data-theme="blue"] {
+  --bg: radial-gradient(120% 120% at 50% -10%, #1a4d8f 0%, #103564 55%, #0a1f3d 100%);
+  --felt: #0e3a6e;
+  --felt-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+  --panel: rgba(12, 32, 62, 0.85);
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --text: #eaf2ff;
+  --text-dim: #93aece;
+  --accent: #5db4ff;
+  --accent-ink: #05203f;
+  --slot: rgba(255, 255, 255, 0.06);
+  --slot-border: rgba(255, 255, 255, 0.16);
+  --card-face-from: #fbfdff;
+  --card-face-to: #e8eef6;
+  --card-edge: #b9c6d8;
+  --card-red: #d22a44;
+  --card-black: #16263b;
+  --card-back-a: #0c3a72;
+  --card-back-b: #114a8e;
+  --card-back-edge: #061f3f;
+  --glow: 0 0 0 3px rgba(93, 180, 255, 0.95), 0 8px 24px rgba(0,0,0,0.4);
+  --shadow: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-drag: 0 16px 40px rgba(0,0,0,0.55);
+  --hint-glow: 0 0 0 3px rgba(93, 180, 255, 0.95);
+  --toolbar-bg: rgba(12, 32, 62, 0.74);
+}
