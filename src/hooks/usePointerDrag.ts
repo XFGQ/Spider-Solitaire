@@ -16,8 +16,6 @@ export interface DragState {
 export function usePointerDrag() {
   const [drag, setDrag] = useState<DragState | null>(null)
   const ghostRef = useRef<HTMLDivElement | null>(null)
-  const isDragging = useRef(false)
-  const startPos = useRef({ x: 0, y: 0 })
   const moveCards = useGameStore(s => s.moveCards)
 
   const onPointerDown = (
@@ -29,35 +27,36 @@ export function usePointerDrag() {
     const run = getMovableRun(tableau[col], index)
     if (!run) return
     e.preventDefault()
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-    isDragging.current = false
-    startPos.current = { x: e.clientX, y: e.clientY }
 
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
     const offsetX = e.clientX - rect.left
     const offsetY = e.clientY - rect.top
+    const startX = e.clientX
+    const startY = e.clientY
+    let moved = false
+
+    setDrag({ fromCol: col, fromIndex: index, run, startX, startY, offsetX, offsetY })
+
+    const updateGhost = (x: number, y: number) => {
+      if (ghostRef.current) {
+        ghostRef.current.style.transform = `translate(${x - offsetX}px, ${y - offsetY}px)`
+      }
+    }
 
     const onMove = (ev: PointerEvent) => {
-      const dx = ev.clientX - startPos.current.x
-      const dy = ev.clientY - startPos.current.y
-      if (!isDragging.current && Math.hypot(dx, dy) > 6) {
-        isDragging.current = true
-        setDrag({
-          fromCol: col, fromIndex: index, run,
-          startX: ev.clientX, startY: ev.clientY,
-          offsetX, offsetY,
-        })
+      if (!moved) {
+        const dx = ev.clientX - startX
+        const dy = ev.clientY - startY
+        if (Math.hypot(dx, dy) > 5) moved = true
       }
-      if (isDragging.current && ghostRef.current) {
-        ghostRef.current.style.transform =
-          `translate(${ev.clientX - offsetX}px, ${ev.clientY - offsetY}px)`
-      }
+      updateGhost(ev.clientX, ev.clientY)
     }
 
     const onUp = (ev: PointerEvent) => {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
 
-      if (isDragging.current) {
+      if (moved) {
         const el = document.elementFromPoint(ev.clientX, ev.clientY)
         const colEl = el?.closest('[data-col]') as HTMLElement | null
         if (colEl) {
@@ -66,14 +65,12 @@ export function usePointerDrag() {
             moveCards({ fromCol: col, fromIndex: index, toCol })
           }
         }
-        setDrag(null)
       } else {
-        setDrag(null)
         const best = findBestTarget(col, index, tableau)
         if (best !== null) moveCards({ fromCol: col, fromIndex: index, toCol: best })
       }
 
-      isDragging.current = false
+      setDrag(null)
     }
 
     window.addEventListener('pointermove', onMove)

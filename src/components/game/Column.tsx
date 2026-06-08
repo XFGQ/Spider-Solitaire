@@ -12,7 +12,7 @@ export function Column({ colIndex }: Props) {
   const tableau = useGameStore(s => s.game.tableau)
   const hint = useGameStore(s => s.hint)
   const column = tableau[colIndex]
-  const { drag, onPointerDown } = usePointerDrag()
+  const { drag, ghostRef, onPointerDown } = usePointerDrag()
 
   const cardH = getCardH()
   const fanDown = cardH * 0.13
@@ -69,7 +69,7 @@ export function Column({ colIndex }: Props) {
         })}
       </div>
 
-      {isDraggingFromHere && drag && <DragGhost drag={drag} />}
+      {isDraggingFromHere && drag && <DragGhost drag={drag} ghostRef={ghostRef} />}
     </>
   )
 }

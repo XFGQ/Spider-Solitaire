@@ -15,12 +15,13 @@ interface Props {
   index: number
   isHint?: boolean
   isDragging?: boolean
+  noLayout?: boolean
   style?: React.CSSProperties
   onPointerDown?: (e: React.PointerEvent) => void
 }
 
 export function Card({
-  card, col, index, isHint, isDragging, style, onPointerDown
+  card, col, index, isHint, isDragging, noLayout, style, onPointerDown
 }: Props) {
   const rank = RANK_LABEL[card.rank] ?? String(card.rank)
   const suit = SUIT_SYMBOL[card.suit]
@@ -29,7 +30,7 @@ export function Card({
   if (!card.faceUp) {
     return (
       <motion.div
-        layoutId={card.id}
+        layoutId={noLayout ? undefined : card.id}
         data-col={col}
         data-index={index}
         className="card-back absolute rounded-lg"
@@ -41,7 +42,7 @@ export function Card({
 
   return (
     <motion.div
-      layoutId={card.id}
+      layoutId={noLayout ? undefined : card.id}
       data-col={col}
       data-index={index}
       className={[
@@ -57,7 +58,7 @@ export function Card({
         ...style,
       }}
       onPointerDown={onPointerDown}
-      whileHover={{ y: -2 }}
+      whileHover={noLayout ? undefined : { y: -2 }}
       transition={{ type: 'spring', stiffness: 400, damping: 35 }}
     >
       <div className="absolute top-1 left-1.5 flex flex-col items-center leading-none">
