@@ -1,5 +1,6 @@
 import { useGameStore } from '../../store/gameStore'
 import { usePointerDrag } from '../../hooks/usePointerDrag'
+import { getCardH } from '../../utils/cardSize'
 import { Card } from './Card'
 import { DragGhost } from './DragGhost'
 
@@ -13,9 +14,7 @@ export function Column({ colIndex }: Props) {
   const column = tableau[colIndex]
   const { drag, onPointerDown } = usePointerDrag()
 
-  const cardH = parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue('--card-h') || '120'
-  )
+  const cardH = getCardH()
   const fanDown = cardH * 0.13
   const fanUp = cardH * 0.30
 

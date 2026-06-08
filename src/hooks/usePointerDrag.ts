@@ -7,14 +7,15 @@ export interface DragState {
   fromCol: number
   fromIndex: number
   run: Card[]
-  x: number
-  y: number
+  startX: number
+  startY: number
   offsetX: number
   offsetY: number
 }
 
 export function usePointerDrag() {
   const [drag, setDrag] = useState<DragState | null>(null)
+  const ghostRef = useRef<HTMLDivElement | null>(null)
   const isDragging = useRef(false)
   const startPos = useRef({ x: 0, y: 0 })
   const moveCards = useGameStore(s => s.moveCards)
@@ -32,24 +33,23 @@ export function usePointerDrag() {
     isDragging.current = false
     startPos.current = { x: e.clientX, y: e.clientY }
 
-    const state: DragState = {
-      fromCol: col,
-      fromIndex: index,
-      run,
-      x: e.clientX,
-      y: e.clientY,
-      offsetX: e.clientX - rect.left,
-      offsetY: e.clientY - rect.top,
-    }
+    const offsetX = e.clientX - rect.left
+    const offsetY = e.clientY - rect.top
 
     const onMove = (ev: PointerEvent) => {
       const dx = ev.clientX - startPos.current.x
       const dy = ev.clientY - startPos.current.y
       if (!isDragging.current && Math.hypot(dx, dy) > 6) {
         isDragging.current = true
+        setDrag({
+          fromCol: col, fromIndex: index, run,
+          startX: ev.clientX, startY: ev.clientY,
+          offsetX, offsetY,
+        })
       }
-      if (isDragging.current) {
-        setDrag(d => d ? { ...d, x: ev.clientX, y: ev.clientY } : null)
+      if (isDragging.current && ghostRef.current) {
+        ghostRef.current.style.transform =
+          `translate(${ev.clientX - offsetX}px, ${ev.clientY - offsetY}px)`
       }
     }
 
@@ -76,12 +76,11 @@ export function usePointerDrag() {
       isDragging.current = false
     }
 
-    setDrag(state)
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp, { once: true })
   }
 
-  return { drag, onPointerDown }
+  return { drag, ghostRef, onPointerDown }
 }
 
 function findBestTarget(col: number, index: number, tableau: Card[][]): number | null {

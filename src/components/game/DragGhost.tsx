@@ -1,4 +1,5 @@
 import type { DragState } from '../../hooks/usePointerDrag'
+import { getCardH } from '../../utils/cardSize'
 import { Card } from './Card'
 
 interface Props {
@@ -6,10 +7,7 @@ interface Props {
 }
 
 export function DragGhost({ drag }: Props) {
-  const cardH = parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue('--card-h') || '120'
-  )
-  const fanUp = cardH * 0.30
+  const fanUp = getCardH() * 0.30
 
   return (
     <div
