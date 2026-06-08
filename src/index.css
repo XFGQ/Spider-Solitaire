@@ -1,6 +1,39 @@
+@import "tailwindcss";
+@import "./styles/themes/dark.css";
+@import "./styles/themes/light.css";
+@import "./styles/themes/blue.css";
+
 :root {
   --card-w: clamp(52px, 8.5vw, 96px);
   --card-h: calc(var(--card-w) / 0.69);
   --col-gap: clamp(4px, 1.2vw, 14px);
 }
-@import 'tailwindcss';
+
+html, body, #root {
+  min-height: 100dvh;
+}
+
+body {
+  background: var(--bg);
+}
+
+.card-back {
+  background: linear-gradient(135deg, var(--card-back-a), var(--card-back-b));
+  border: 1px solid var(--card-back-edge);
+}
+
+.card-face {
+  background: linear-gradient(160deg, var(--card-face-from), var(--card-face-to));
+  border: 1px solid var(--card-edge);
+}
+
+.hint-card {
+  box-shadow: var(--hint-glow) !important;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
