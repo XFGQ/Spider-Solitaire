@@ -13,7 +13,9 @@ export function Column({ colIndex }: Props) {
   const column = tableau[colIndex]
   const { drag, onPointerDown } = usePointerDrag()
 
-  const cardH = 120
+  const cardH = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue('--card-h') || '120'
+  )
   const fanDown = cardH * 0.13
   const fanUp = cardH * 0.30
 
@@ -38,7 +40,6 @@ export function Column({ colIndex }: Props) {
           minHeight: 'var(--card-h)',
         }}
       >
-        {/* Boş slot */}
         <div
           className="absolute inset-0 rounded-lg"
           style={{
@@ -69,7 +70,6 @@ export function Column({ colIndex }: Props) {
         })}
       </div>
 
-      {/* Ghost sadece bu kolondan sürükleniyorsa render et */}
       {isDraggingFromHere && drag && <DragGhost drag={drag} />}
     </>
   )

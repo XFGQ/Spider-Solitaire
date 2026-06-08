@@ -60,17 +60,14 @@ export function Card({
       whileHover={{ y: -2 }}
       transition={{ type: 'spring', stiffness: 400, damping: 35 }}
     >
-      {/* Sol üst köşe */}
       <div className="absolute top-1 left-1.5 flex flex-col items-center leading-none">
         <span className="font-bold" style={{ fontSize: 'calc(var(--card-w) * 0.27)' }}>{rank}</span>
         <span style={{ fontSize: 'calc(var(--card-w) * 0.22)' }}>{suit}</span>
       </div>
-      {/* Merkez */}
       <div className="absolute inset-0 flex items-center justify-center"
         style={{ fontSize: 'calc(var(--card-w) * 0.46)' }}>
         {suit}
       </div>
-      {/* Sağ alt köşe (180°) */}
       <div className="absolute bottom-1 right-1.5 flex flex-col items-center leading-none rotate-180">
         <span className="font-bold" style={{ fontSize: 'calc(var(--card-w) * 0.27)' }}>{rank}</span>
         <span style={{ fontSize: 'calc(var(--card-w) * 0.22)' }}>{suit}</span>
