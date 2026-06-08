@@ -1,1 +1,6 @@
+:root {
+  --card-w: clamp(52px, 8.5vw, 96px);
+  --card-h: calc(var(--card-w) / 0.69);
+  --col-gap: clamp(4px, 1.2vw, 14px);
+}
 @import 'tailwindcss';
