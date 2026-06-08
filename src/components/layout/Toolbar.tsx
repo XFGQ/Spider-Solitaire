@@ -14,11 +14,7 @@ const DIFFICULTIES: { value: Difficulty; label: string }[] = [
   { value: 4, label: '4 Suits' },
 ]
 
-interface Props {
-  onStatsToggle: () => void
-}
-
-export function Toolbar({ onStatsToggle }: Props) {
+export function Toolbar() {
   const { newGame, restartGame, undo, showHint, dealFromStock } = useGameStore()
   const history = useGameStore(s => s.history)
   const stock = useGameStore(s => s.game.stock)
@@ -76,10 +72,6 @@ export function Toolbar({ onStatsToggle }: Props) {
           <option key={d.value} value={d.value}>{d.label}</option>
         ))}
       </select>
-
-      <button className={btnBase} style={btnStyle} onClick={onStatsToggle}>
-        📊 Stats
-      </button>
 
       <div
         className="ml-auto flex gap-1 p-1 rounded-xl"

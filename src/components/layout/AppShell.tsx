@@ -10,13 +10,12 @@ import { Board } from '../game/Board'
 import { Foundation } from '../game/Foundation'
 import { StockPile } from '../game/StockPile'
 import { WinModal } from '../ui/WinModal'
-import { StatsModal } from '../ui/StatsModal'
+import { StatsPanel } from '../ui/StatsModal'
 import { Toast } from '../ui/Toast'
 
 export function AppShell() {
   const [toast, setToast] = useState<string | null>(null)
   const [winOpen, setWinOpen] = useState(false)
-  const [statsOpen, setStatsOpen] = useState(false)
 
   const { game, newGame } = useGameStore()
   const recordResult = useStatsStore(s => s.recordResult)
@@ -45,7 +44,7 @@ export function AppShell() {
   return (
     <div className="flex flex-col min-h-dvh">
       <Header elapsed={elapsed} />
-      <Toolbar onStatsToggle={() => setStatsOpen(s => !s)} />
+      <Toolbar />
 
       <main className="flex-1 p-4 overflow-x-auto">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
@@ -56,6 +55,8 @@ export function AppShell() {
         <Board />
       </main>
 
+      <StatsPanel />
+
       <WinModal
         open={winOpen}
         time={elapsed}
@@ -64,8 +65,6 @@ export function AppShell() {
         onNewGame={handleNewGame}
         onClose={() => setWinOpen(false)}
       />
-
-      <StatsModal open={statsOpen} onClose={() => setStatsOpen(false)} />
 
       {toast && <Toast message={toast} onDone={() => setToast(null)} />}
     </div>
