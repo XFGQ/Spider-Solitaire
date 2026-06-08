@@ -1,10 +1,12 @@
 import { useGameStore } from '../../store/gameStore'
-import { useTimer } from '../../hooks/useTimer'
 import { formatTime } from '../../utils/format'
 
-export function Header() {
-  const { moves, score, foundation, status } = useGameStore(s => s.game)
-  const { elapsed } = useTimer(status === 'playing')
+interface Props {
+  elapsed: number
+}
+
+export function Header({ elapsed }: Props) {
+  const { moves, score, foundation } = useGameStore(s => s.game)
 
   return (
     <header
@@ -14,7 +16,6 @@ export function Header() {
         borderBottom: '1px solid var(--panel-border)',
       }}
     >
-      {/* Logo */}
       <div className="mr-auto flex items-center gap-3">
         <span className="text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>
           Spider <span style={{ color: 'var(--accent)' }}>Solitaire</span>
@@ -22,7 +23,6 @@ export function Header() {
         <span className="text-lg opacity-70">♠♥♦♣</span>
       </div>
 
-      {/* Stats */}
       {[
         { label: 'Time',  value: formatTime(elapsed) },
         { label: 'Moves', value: moves },

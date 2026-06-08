@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import type { Card } from '../types/game'
-import { getMovableRun } from '../engine/rules'
+import { canDrop, getMovableRun } from '../engine/rules'
 import { useGameStore } from '../store/gameStore'
 
 export interface DragState {
@@ -58,7 +58,6 @@ export function usePointerDrag() {
       window.removeEventListener('pointerup', onUp)
 
       if (isDragging.current) {
-        // hangi kolona bırakıldığını bul
         const el = document.elementFromPoint(ev.clientX, ev.clientY)
         const colEl = el?.closest('[data-col]') as HTMLElement | null
         if (colEl) {
@@ -69,7 +68,6 @@ export function usePointerDrag() {
         }
         setDrag(null)
       } else {
-        // tıklama → auto move
         setDrag(null)
         const best = findBestTarget(col, index, tableau)
         if (best !== null) moveCards({ fromCol: col, fromIndex: index, toCol: best })
@@ -90,18 +88,16 @@ function findBestTarget(col: number, index: number, tableau: Card[][]): number |
   const run = getMovableRun(tableau[col], index)
   if (!run) return null
 
-  import('../engine/rules').then(() => {}) 
-
   let best: number | null = null
   let bestScore = -1
 
   for (let t = 0; t < tableau.length; t++) {
     if (t === col) continue
     const target = tableau[t]
-    const top = target[target.length - 1]
-    if (target.length > 0 && (!top?.faceUp || top.rank !== run[0].rank + 1)) continue
+    if (!canDrop(run, target)) continue
     if (target.length === 0 && run.length === tableau[col].length) continue
 
+    const top = target[target.length - 1]
     let score = target.length === 0 ? 1 : 2
     if (top?.suit === run[0].suit) score += 2
     if (score > bestScore) { bestScore = score; best = t }

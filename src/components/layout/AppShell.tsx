@@ -23,12 +23,10 @@ export function AppShell() {
 
   useKeyboard()
 
-  // Oyun başlangıcı
   useEffect(() => {
-    newGame()
+    newGame(difficulty)
   }, [])
 
-  // Kazanma
   useEffect(() => {
     if (game.status === 'won') {
       recordResult(difficulty, true, elapsed, game.score)
@@ -44,11 +42,10 @@ export function AppShell() {
 
   return (
     <div className="flex flex-col min-h-dvh">
-      <Header />
+      <Header elapsed={elapsed} />
       <Toolbar />
 
       <main className="flex-1 p-4 overflow-x-auto">
-        {/* Stok + Foundation üst satır */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <StockPile />
           <Foundation />
