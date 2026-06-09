@@ -1,28 +1,21 @@
-import { useEffect, type RefObject } from 'react'
 import type { DragState } from '../../hooks/usePointerDrag'
-import { getCardH } from '../../utils/cardSize'
 import { Card } from './Card'
 
 interface Props {
   drag: DragState
-  ghostRef: RefObject<HTMLDivElement | null>
+  cardH: number
 }
 
-export function DragGhost({ drag, ghostRef }: Props) {
-  const fanUp = getCardH() * 0.30
-
-  useEffect(() => {
-    if (ghostRef.current) {
-      ghostRef.current.style.transform =
-        `translate(${drag.startX - drag.offsetX}px, ${drag.startY - drag.offsetY}px)`
-    }
-  }, [])
+export function DragGhost({ drag, cardH }: Props) {
+  const fanUp = cardH * 0.30
 
   return (
     <div
-      ref={ghostRef}
       className="fixed pointer-events-none z-50"
-      style={{ left: 0, top: 0, willChange: 'transform' }}
+      style={{
+        left: drag.x - drag.offsetX,
+        top: drag.y - drag.offsetY,
+      }}
     >
       {drag.run.map((card, i) => (
         <Card
@@ -30,11 +23,11 @@ export function DragGhost({ drag, ghostRef }: Props) {
           card={card}
           col={drag.fromCol}
           index={drag.fromIndex + i}
-          noLayout
           style={{
+            position: 'absolute',
             top: i * fanUp,
+            left: 0,
             boxShadow: 'var(--shadow-drag)',
-            position: i === 0 ? 'relative' : 'absolute',
           }}
         />
       ))}
