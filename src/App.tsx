@@ -1,8 +1,11 @@
+import { AppShell } from './components/layout/AppShell'
+import { ThemeProvider } from './components/themes/ThemeProvider'
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold">Spider Solitaire</h1>
-    </div>
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
   )
 }
 

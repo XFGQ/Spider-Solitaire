@@ -5,6 +5,7 @@ import type { Hint } from '../engine/hints'
 import { dealInitial } from '../engine/deck'
 import { canDrop, findCompletedRun, getMovableRun } from '../engine/rules'
 import { findBestHint } from '../engine/hints'
+
 interface GameStore {
   game: GameState
   history: GameState[]
@@ -69,22 +70,17 @@ export const useGameStore = create<GameStore>()(
     },
 
     restartGame: () => {
-      const { seedTableau, seedStock, difficulty } = get()
+      const { seedTableau, seedStock } = get()
       set(s => {
         s.game = {
-          tableau: seedTableau.map(col => col.map(c => ({ ...c, faceUp: false, ...(col.indexOf(c) === col.length - 1 ? { faceUp: true } : {}) }))),
+          tableau: seedTableau.map(col =>
+            col.map((c, i) => ({ ...c, faceUp: i === col.length - 1 }))
+          ),
           stock: seedStock.map(c => ({ ...c, faceUp: false })),
-          foundation: 0, score: 500, moves: 0, status: 'playing'
+          foundation: 0, score: 500, moves: 0, status: 'playing',
         }
         s.history = []
         s.hint = null
-      })
-      const { tableau, stock } = dealInitial(difficulty)
-      set(s => {
-        s.game.tableau = seedTableau.map(col =>
-          col.map((c, i) => ({ ...c, faceUp: i === col.length - 1 }))
-        )
-        s.game.stock = seedStock.map(c => ({ ...c, faceUp: false }))
       })
     },
 
@@ -109,7 +105,6 @@ export const useGameStore = create<GameStore>()(
         s.hint = null
       })
 
-      // completion check (immer dışında çünkü derived)
       const { tableau, count } = applyCompletions(get().game.tableau)
       if (count > 0) {
         set(s => {

@@ -1,4 +1,4 @@
-import { Card } from '../types/game'
+import type{ Card } from '../types/game'
 import { canDrop, getMovableRun } from './rules'
 
 export interface Hint {
