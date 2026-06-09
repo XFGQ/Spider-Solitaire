@@ -10,8 +10,8 @@ export function Foundation() {
           key={i}
           className="rounded-lg flex items-center justify-center text-xl"
           style={{
-            width: 'calc(var(--card-w) * 0.6)',
-            height: 'calc(var(--card-h) * 0.45)',
+            width: 'calc(var(--card-w) * 0.7)',
+            height: 'calc(var(--card-h) * 0.4)',
             background: i < foundation ? 'var(--accent)' : 'var(--slot)',
             border: '1.5px solid var(--slot-border)',
             color: i < foundation ? 'var(--accent-ink)' : 'var(--text-dim)',

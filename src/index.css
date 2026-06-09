@@ -9,6 +9,14 @@
   --col-gap: clamp(3px, 1vw, 14px);
 }
 
+/* Mobilde 10 kolonu tek ekrana sığdır — yatay scroll olmasın */
+@media (max-width: 640px) {
+  :root {
+    --card-w: calc((100vw - 24px) / 10 - 3px);
+    --col-gap: 3px;
+  }
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;

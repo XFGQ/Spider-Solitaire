@@ -37,5 +37,6 @@ export function Header({ elapsed }: Props) {
         </div>
       ))}
     </header>
-  )
+ 
+)
 }

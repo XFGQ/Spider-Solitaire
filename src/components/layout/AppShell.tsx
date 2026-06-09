@@ -62,10 +62,10 @@ export function AppShell() {
 
       <main className="flex-1 p-3 md:p-4 overflow-x-auto">
         <div className="felt-surface rounded-2xl p-3 md:p-5">
-          <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
-            <StockPile />
-            <Foundation />
-          </div>
+       <div className="flex items-start justify-between mb-3 gap-2">
+  <StockPile />
+  <Foundation />
+</div>
           <Board />
         </div>
       </main>
