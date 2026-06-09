@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# Spider Solitaire
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, animated Spider Solitaire built as a web app. Three suit difficulties, undo/hint systems, statistics tracking, and switchable themes.
 
-Currently, two official plugins are available:
+**Live:** [spider.rinnesoft.com](https://spider.rinnesoft.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Three difficulty levels — 1, 2, and 4 suits
+- Drag & drop or tap-to-move card handling
+- Undo, hint, restart, and new game
+- Stock dealing with empty-column rule enforcement
+- Per-difficulty statistics (games played, win rate, best time, best score)
+- Three themes — dark, light, and blue
+- Smooth card animations and sound effects
+- Keyboard shortcuts: `n` new game, `u` undo, `h` hint, `d` deal
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **React** + **TypeScript**
+- **Vite** — build tooling
+- **Tailwind CSS** + CSS variables — styling and theming
+- **Framer Motion** — animations
+- **Zustand** + Immer — state management
+- **Howler.js** — sound
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [localhost:5173](http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Build
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
 ```
+
+Output goes to `dist/`. Deployed automatically to the server via GitHub Actions on every push to `main`.
+
+## Project Structure
+
+```
+src/
+├── engine/      # Pure game logic — deck, rules, hints
+├── store/       # Zustand stores — game, stats, settings
+├── hooks/       # Timer, keyboard, sound, drag
+├── components/  # UI — board, cards, toolbar, modals
+└── styles/      # Theme CSS variables
+```
+
+The `engine/` layer has zero UI dependencies, so the game rules can be tested independently of React.
+
+## License
+
+MIT
