@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 import type { AllStats, Difficulty, StatsEntry } from '../types/game'
 
 interface StatsStore {
@@ -14,11 +15,11 @@ const defaultStats = (): AllStats => ({ 1: empty(), 2: empty(), 4: empty() })
 
 export const useStatsStore = create<StatsStore>()(
   persist(
-    (set) => ({
+    immer((set) => ({
       stats: defaultStats(),
 
       recordResult: (diff, won, time, score) =>
-        set(s => {
+        set((s) => {
           const e = s.stats[diff]
           e.played++
           if (won) {
@@ -28,8 +29,8 @@ export const useStatsStore = create<StatsStore>()(
           }
         }),
 
-      reset: () => set({ stats: defaultStats() }),
-    }),
+      reset: () => set((s) => { s.stats = defaultStats() }),
+    })),
     { name: 'spider-stats' }
   )
 )
