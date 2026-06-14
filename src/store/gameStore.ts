@@ -5,6 +5,7 @@ import type { Hint } from '../engine/hints'
 import { dealInitial } from '../engine/deck'
 import { canDrop, findCompletedRun, getMovableRun } from '../engine/rules'
 import { findBestHint } from '../engine/hints'
+import { useSettingsStore } from './settingsStore'
 
 interface GameStore {
   game: GameState
@@ -33,12 +34,13 @@ const emptyGame = (): GameState => ({
 })
 
 function applyCompletions(tableau: Card[][]): { tableau: Card[][], count: number } {
+  const freeMode = useSettingsStore.getState().freeMode
   let count = 0
   const next = tableau.map(col => {
     let c = [...col]
     let found = true
     while (found) {
-      const idx = findCompletedRun(c)
+      const idx = findCompletedRun(c, freeMode)
       if (idx !== null) { c.splice(idx, 13); count++; if (c.length && !c[c.length - 1].faceUp) c[c.length - 1].faceUp = true }
       else found = false
     }
@@ -86,14 +88,15 @@ export const useGameStore = create<GameStore>()(
 
     moveCards: (move) => {
       const { game } = get()
-      const run = getMovableRun(game.tableau[move.fromCol], move.fromIndex)
+      const freeMode = useSettingsStore.getState().freeMode
+      const run = getMovableRun(game.tableau[move.fromCol], move.fromIndex, freeMode)
       if (!run || !canDrop(run, game.tableau[move.toCol])) return
 
       set(s => {
         s.history.push(JSON.parse(JSON.stringify(s.game)))
         if (s.history.length > 200) s.history.shift()
 
-        const moved = s.game.tableau[move.fromCol].splice(move.fromIndex)
+        const moved = s.game.tableau[move.fromCol].splice(move.fromIndex, run.length)
         s.game.tableau[move.toCol].push(...moved)
 
         const src = s.game.tableau[move.fromCol]
@@ -152,7 +155,8 @@ export const useGameStore = create<GameStore>()(
     },
 
     showHint: () => {
-      const hint = findBestHint(get().game.tableau)
+      const freeMode = useSettingsStore.getState().freeMode
+      const hint = findBestHint(get().game.tableau, freeMode)
       set(s => { s.hint = hint })
     },
 

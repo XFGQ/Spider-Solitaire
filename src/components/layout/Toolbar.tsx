@@ -18,7 +18,7 @@ export function Toolbar() {
   const { newGame, restartGame, undo, showHint, dealFromStock } = useGameStore()
   const history = useGameStore(s => s.history)
   const stock = useGameStore(s => s.game.stock)
-  const { theme, setTheme, difficulty, setDifficulty } = useSettingsStore()
+  const { theme, setTheme, difficulty, setDifficulty, freeMode, toggleFreeMode } = useSettingsStore()
 
   const btnBase = `inline-flex items-center gap-2 px-3 py-2 rounded-xl
     text-sm font-semibold transition-all duration-150
@@ -35,6 +35,12 @@ export function Toolbar() {
     background: 'var(--accent)',
     border: 'none',
     color: 'var(--accent-ink)',
+  }
+
+  const btnFree = {
+    background: freeMode ? '#f59e0b' : 'var(--panel)',
+    border: freeMode ? 'none' : '1px solid var(--panel-border)',
+    color: freeMode ? '#1c1917' : 'var(--text)',
   }
 
   return (
@@ -60,6 +66,10 @@ export function Toolbar() {
 
       <button className={btnBase} style={btnStyle} onClick={dealFromStock} disabled={stock.length === 0}>
         🃏 Deal ({Math.floor(stock.length / 10)})
+      </button>
+
+      <button className={btnBase} style={btnFree} onClick={toggleFreeMode}>
+        ⚡ Kuralsız {freeMode ? '(Açık)' : '(Kapalı)'}
       </button>
 
       <select
