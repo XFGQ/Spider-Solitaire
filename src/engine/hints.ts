@@ -8,13 +8,13 @@ export interface Hint {
   score: number
 }
 
-export function findBestHint(tableau: Card[][]): Hint | null {
+export function findBestHint(tableau: Card[][], freeMode = false): Hint | null {
   const candidates: Hint[] = []
 
   for (let c = 0; c < tableau.length; c++) {
     const col = tableau[c]
     for (let i = 0; i < col.length; i++) {
-      const run = getMovableRun(col, i)
+      const run = getMovableRun(col, i, freeMode)
       if (!run) continue
       for (let t = 0; t < tableau.length; t++) {
         if (t === c || !canDrop(run, tableau[t])) continue
