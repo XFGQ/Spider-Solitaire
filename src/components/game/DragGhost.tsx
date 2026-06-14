@@ -5,7 +5,7 @@ import { Card } from './Card'
 interface Props {
   drag: DragState
   cardH: number
-  ghostRef: RefObject<HTMLDivElement>
+  ghostRef: RefObject<HTMLDivElement | null>
 }
 
 export function DragGhost({ drag, cardH, ghostRef }: Props) {
