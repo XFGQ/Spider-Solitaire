@@ -1,20 +1,24 @@
+import type { RefObject } from 'react'
 import type { DragState } from '../../hooks/usePointerDrag'
 import { Card } from './Card'
 
 interface Props {
   drag: DragState
   cardH: number
+  ghostRef: RefObject<HTMLDivElement>
 }
 
-export function DragGhost({ drag, cardH }: Props) {
+export function DragGhost({ drag, cardH, ghostRef }: Props) {
   const fanUp = cardH * 0.30
 
   return (
     <div
+      ref={ghostRef}
       className="fixed pointer-events-none z-50"
       style={{
-        left: drag.x - drag.offsetX,
-        top: drag.y - drag.offsetY,
+        top: 0,
+        left: 0,
+        transform: `translate(${drag.initialX - drag.offsetX}px, ${drag.initialY - drag.offsetY}px)`,
       }}
     >
       {drag.run.map((card, i) => (
@@ -23,6 +27,7 @@ export function DragGhost({ drag, cardH }: Props) {
           card={card}
           col={drag.fromCol}
           index={drag.fromIndex + i}
+          noLayout={true}
           style={{
             position: 'absolute',
             top: i * fanUp,
